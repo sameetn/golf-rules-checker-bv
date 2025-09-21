@@ -112,8 +112,8 @@ export default function ChatAssistant() {
         <ConversationContent className="space-y-4">
           {messages.length === 0 ? (
             <ConversationEmptyState
-              title="Start a conversation"
-              description="Ask me anything and I'll help you out!"
+              title="Welcome to the Golf helper"
+              description="Ask me anything about the rules of golf and I can help you out!"
             />
           ) : (
             messages.map((message) => (
