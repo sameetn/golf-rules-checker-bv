@@ -1,30 +1,68 @@
-# AgentEngineeringBootcamp
+# TypeScript Next.js AI SDK 5 Starter
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+Minimal starter for AI apps with Next.js 15, TypeScript, AI SDK 5, shadcn/ui, and AI Elements.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/sameetnasnodkar-4329s-projects/v0-agent-engineering-bootcamp)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/OPVTQ2Xh6jh)
+## Features
 
-## Overview
+- Clean chat interface with GPT-5
+- AI Elements components (Conversation, Message, PromptInput)
+- shadcn/ui design system
+- Non-streaming responses
+- TypeScript ready
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## Setup
 
-## Deployment
+1. Install dependencies:
 
-Your project is live at:
+   ```bash
+   pnpm install
+   ```
 
-**[https://vercel.com/sameetnasnodkar-4329s-projects/v0-agent-engineering-bootcamp](https://vercel.com/sameetnasnodkar-4329s-projects/v0-agent-engineering-bootcamp)**
+2. Create `.env.local` file:
 
-## Build your app
+   ```bash
+   echo "OPENAI_API_KEY=your_openai_api_key_here" > .env.local
+   ```
 
-Continue building your app on:
+3. Start development:
+   ```bash
+   pnpm dev
+   ```
 
-**[https://v0.app/chat/projects/OPVTQ2Xh6jh](https://v0.app/chat/projects/OPVTQ2Xh6jh)**
+Open [http://localhost:3000](http://localhost:3000) to chat with the AI assistant.
 
-## How It Works
+## Resources
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+- [Next.js 15](https://nextjs.org/) - React framework
+- [AI SDK 5](https://ai-sdk.dev/) - AI integration toolkit
+- [AI Elements](https://ai-sdk.dev/elements/overview) - Pre-built AI components
+- [shadcn/ui](https://ui.shadcn.com/) - Component library
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+
+## Architecture & Data Flow
+
+```text
++-------------------------+            +-----------------------------+            +---------------------------+
+|       Browser UI        |            |       Next.js API Route     |            |         OpenAI API        |
+| `ChatAssistant`         |            | `app/api/chat/route.ts`     |            |  model: openai('gpt-5')   |
+|  - AI Elements UI       |            |  - validate input           |            |                           |
+|  - PromptInput submit   |            |  - call AI SDK `generateText`|           |                           |
++-------------------------+            +-----------------------------+            +---------------------------+
+            |                                         |                                        |
+            | 1) User types message                   |                                        |
+            |---------------------------------------->|                                        |
+            |  POST /api/chat { message }             |                                        |
+            |                                         | 2) generateText({ model, prompt })     |
+            |                                         |--------------------------------------->|
+            |                                         |                                        |
+            |                                         |                3) { text }             |
+            |                                         |<---------------------------------------|
+            | 4) JSON { response: text }              |                                        |
+            |<----------------------------------------|                                        |
+            | 5) Render assistant message             |                                        |
+            v                                         v                                        v
+
+Env: `OPENAI_API_KEY` (server-side) → used by AI SDK OpenAI client
+Errors: non-200 from API → UI shows fallback "Sorry, I encountered an error."
+```
